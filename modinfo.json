@@ -1,0 +1,9 @@
+﻿{
+	"id": "darkgran.ka_iteratorkit",
+	"name": "Iterator Kit - KA",
+	"version": "2.0.1",
+	"authors": "twofour2 (edit: DarkGran)",
+	"description": "...",
+	"tags": [ "Custom Iterator" ],
+	"checksum_override_version": false
+}
