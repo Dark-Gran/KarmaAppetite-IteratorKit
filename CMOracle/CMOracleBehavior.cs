@@ -109,7 +109,14 @@ namespace IteratorMod.CMOracle
             // move?
             if (this.oracle.oracleJson.startPos == Vector2.zero)
             {
-                this.SetNewDestination(this.oracle.room.RandomPos());
+                Vector2 spawn = this.oracle.room.RandomPos();
+                if (this.oracle.oracleJson.spawnBounds != null)
+                {
+                    spawn.x = Mathf.Clamp(spawn.x, this.oracle.oracleJson.spawnBounds[0].x, this.oracle.oracleJson.spawnBounds[1].x);
+                    spawn.y = Mathf.Clamp(spawn.y, this.oracle.oracleJson.spawnBounds[0].y, this.oracle.oracleJson.spawnBounds[1].y);
+
+                }
+                this.SetNewDestination(spawn);
             }
             else
             {
@@ -381,7 +388,7 @@ namespace IteratorMod.CMOracle
             this.pathProgression = 0f;
         }
 
-        public Vector2 ClampToRoom(Vector2 vector)
+        public Vector2 ClampToRoom(Vector2 vector) //uses tile position instead of coordinates? (different magnitude/digit-place)
         {
             vector.x = Mathf.Clamp(vector.x, this.oracle.arm.cornerPositions[0].x + 10f, this.oracle.arm.cornerPositions[1].x - 10f);
             vector.y = Mathf.Clamp(vector.y, this.oracle.arm.cornerPositions[2].y + 10f, this.oracle.arm.cornerPositions[1].y - 10f);

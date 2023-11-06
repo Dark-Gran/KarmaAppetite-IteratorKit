@@ -20,8 +20,8 @@ namespace IteratorMod.CMOracle
         public Vector2 startPos = Vector2.zero;
         public string pearlFallback = null;
         public List<OracleJsonTilePos> cornerPositions = new List<OracleJsonTilePos>();
+        public List<Vector2> spawnBounds = new List<Vector2>();
 
-    
         [JsonProperty("for")]
         private List<String> forSlugList; 
 
