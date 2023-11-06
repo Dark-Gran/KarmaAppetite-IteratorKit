@@ -67,7 +67,7 @@ namespace IteratorMod.CMOracle
         
         public class OracleBodyJson
         {
-            public OracleBodyChunkJson oracleColor, eyes, head, torso, arms, hands, legs, feet, chin, neck, sigil = new OracleBodyChunkJson();
+            public OracleBodyChunkJson oracleColor, eyes, head, torso, arms, hands, legs, feet, chin, neck, sigil, subhalo = new OracleBodyChunkJson();
             public OracleGownJson gown = new OracleGownJson();
 
             public class OracleGownJson

@@ -25,6 +25,8 @@ namespace IteratorMod.CMOracle
 
         public int sunFinL, sunFinR;
 
+        public int subHaloSprite = -1;
+
         public OracleJSON.OracleBodyJson bodyJson;
 
         public static ArmBase staticCheckArmBase;
@@ -55,6 +57,12 @@ namespace IteratorMod.CMOracle
             this.totalSprites += 4;
 
             this.halo = null;// new OracleGraphics.Halo(this, this.totalSprites);
+
+            if (this.bodyJson.subhalo != null)
+            {
+                this.subHaloSprite = this.totalSprites;
+                this.totalSprites++;
+            }
 
             if (this.bodyJson.gown != null)
             {
@@ -190,14 +198,14 @@ namespace IteratorMod.CMOracle
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
         {
-           // Futile.atlasManager.LogAllElementNames();
+            // Futile.atlasManager.LogAllElementNames();
             sLeaser.sprites = new FSprite[this.totalSprites];
             for (int i = 0; i < base.owner.bodyChunks.Length; i++)
             {
                 sLeaser.sprites[this.firstBodyChunkSprite + i] = new FSprite("Circle20", true);
                 sLeaser.sprites[this.firstBodyChunkSprite + i].scale = base.owner.bodyChunks[i].rad / 10f;
                 sLeaser.sprites[this.firstBodyChunkSprite + i].color = new Color(1f, (i == 0) ? 0.5f : 0f, (i == 0) ? 0.5f : 0f);
-                
+
             }
             for (int j = 0; j < this.armJointGraphics.Length; j++)
             {
@@ -215,6 +223,14 @@ namespace IteratorMod.CMOracle
             {
                 this.armBase.InitiateSprites(sLeaser, rCam);
             }
+            
+            if (this.subHaloSprite != -1)
+            {
+                sLeaser.sprites[this.subHaloSprite] = new FSprite(this.bodyJson.subhalo.sprite, true);
+                sLeaser.sprites[this.subHaloSprite].color = new Color(this.bodyJson.subhalo.r, this.bodyJson.subhalo.g, this.bodyJson.subhalo.b);
+            }
+            
+
             sLeaser.sprites[this.neckSprite] = new FSprite((this.bodyJson.neck?.sprite != null) ? this.bodyJson.neck.sprite : "pixel", true);
             sLeaser.sprites[this.neckSprite].scaleX = 3f;
             sLeaser.sprites[this.neckSprite].anchorY = 0f;
@@ -365,6 +381,13 @@ namespace IteratorMod.CMOracle
         public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
             base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
+
+            if (subHaloSprite != -1)
+            {
+                sLeaser.sprites[subHaloSprite].x = this.head.pos.x - camPos.x;
+                sLeaser.sprites[subHaloSprite].y = this.head.pos.y - camPos.y + 4f;
+            }
+            
             //this.armBase.DrawSprites(sLeaser, rCam, timeStacker, camPos);
             // this function lets the orig draw sprites function do its thing, then we fix its issues here
             // sLeaser.sprites[this.killSprite].isVisible = false;
