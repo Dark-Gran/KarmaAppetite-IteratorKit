@@ -1,9 +1,9 @@
 ﻿{
 	"id": "darkgran.ka_iteratorkit",
 	"name": "Iterator Kit - KA",
-	"version": "2.0.1",
+	"version": "0.2.1",
 	"authors": "twofour2 (edit: DarkGran)",
-	"description": "...",
+	"description": "Framework for creating custom iterators and making dialogs for existing iterators.\nEdited for Karma Appetite.",
 	"tags": [ "Custom Iterator" ],
 	"checksum_override_version": false
 }
