@@ -15,6 +15,9 @@ using System.Runtime.InteropServices;
 using DevInterface;
 using IL;
 using System.IO;
+using KarmaAppetite;
+using System.Drawing.Text;
+using On;
 
 namespace IteratorMod.CMOracle
 {
@@ -264,6 +267,8 @@ namespace IteratorMod.CMOracle
                 this.inspectPearl = null;
                 this.conversation = null;
             }
+
+            CheckForCorruptionPearls();
 
         }
 
@@ -746,7 +751,6 @@ namespace IteratorMod.CMOracle
                     {
                         File.WriteAllText(saveFilePath, "0");
                     }
-                    //PlayerProgression plrprg = this.oracle.room.game.rainWorld.progression;
                     break;
             }
         }
@@ -782,5 +786,54 @@ namespace IteratorMod.CMOracle
         }
 
 
-}
+        //---CORRUPTION PEARLS---
+
+        private void CheckForCorruptionPearls()
+        {
+            List<PhysicalObject>[] physicalObjects = this.oracle.room.physicalObjects;
+            foreach (List<PhysicalObject> physicalObject in physicalObjects)
+            {
+                foreach (PhysicalObject physObject in physicalObject)
+                {
+                    if (physObject is DataPearl)
+                    {
+                        if ((physObject as DataPearl).AbstractPearl.dataPearlType == KABase.KarmaAppetiteEnums.KAType.CorruptionPearl)
+                        {
+                            DataPearl pearl = (DataPearl)physObject;
+                            if (pearl.grabbedBy.Count == 0)
+                            {
+                                pearl.Destroy();
+
+                                int cCount = 0;
+                                string saveFilePath = GetFilePath("metCM");
+
+                                if (File.Exists(saveFilePath))
+                                {
+                                    cCount = Int32.Parse(File.ReadAllText(GetFilePath("metCM")));
+                                }
+                                cCount++;
+                                if (cCount >= 2)
+                                {
+                                    cCount -= 2;
+                                    this.conversation = new CMConversation(this, CMConversation.CMDialogType.Generic, "finishedCorruptionPearls");
+
+                                    AbstractPhysicalObject apo = new DataPearl.AbstractDataPearl(this.oracle.room.world, AbstractPhysicalObject.AbstractObjectType.DataPearl, null, this.oracle.abstractPhysicalObject.pos, this.oracle.room.game.GetNewID(), -1, -1, null, KABase.KarmaAppetiteEnums.KAType.VoidPearl);
+                                    apo.RealizeInRoom();
+
+                                }
+                                else
+                                {
+                                    this.conversation = new CMConversation(this, CMConversation.CMDialogType.Generic, "addedCorruptionPearl");
+                                }
+
+                                File.WriteAllText(saveFilePath, cCount.ToString());
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
 }

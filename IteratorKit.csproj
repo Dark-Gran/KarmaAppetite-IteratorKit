@@ -20,6 +20,9 @@
     <Reference Include="HOOKS-Assembly-CSharp">
       <HintPath>bin\Debug\net481\HOOKS-Assembly-CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="KarmaAppetite">
+      <HintPath>bin\Debug\net481\KarmaAppetite.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Cecil">
       <HintPath>bin\Debug\net481\Mono.Cecil.dll</HintPath>
     </Reference>
