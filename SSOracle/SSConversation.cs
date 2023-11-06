@@ -7,7 +7,6 @@ using IteratorMod.CMOracle;
 using static IteratorMod.CMOracle.CMConversation;
 using static IteratorMod.CMOracle.OracleJSON.OracleEventsJson;
 using MoreSlugcats;
-using IteratorMod.CMOracle;
 using static IteratorMod.CMOracle.CMOracleBehavior;
 using System.Text.RegularExpressions;
 using static IteratorMod.CustomPearls.DataPearlJson;
