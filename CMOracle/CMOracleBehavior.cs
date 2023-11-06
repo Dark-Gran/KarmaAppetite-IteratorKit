@@ -14,6 +14,7 @@ using MoreSlugcats;
 using System.Runtime.InteropServices;
 using DevInterface;
 using IL;
+using System.IO;
 
 namespace IteratorMod.CMOracle
 {
@@ -62,6 +63,7 @@ namespace IteratorMod.CMOracle
             startPlayerConversation,
             kickPlayerOut,
             killPlayer,
+            saveMetCM
         }
 
         public enum CMOracleMovement
@@ -487,7 +489,15 @@ namespace IteratorMod.CMOracle
                     {
                         this.oracle.room.game.cameras[0].EnterCutsceneMode(this.player.abstractCreature, RoomCamera.CameraCutsceneType.Oracle);
                         // now we can start calling player dialogs!
-                        this.conversation = new CMConversation(this, CMConversation.CMDialogType.Generic, "playerEnter");
+
+                        if (!File.Exists(GetFilePath("metCM")))
+                        {
+                            this.conversation = new CMConversation(this, CMConversation.CMDialogType.Generic, "playerEnterNeverMet");
+                        }
+                        else
+                        {
+                            this.conversation = new CMConversation(this, CMConversation.CMDialogType.Generic, "playerEnter");
+                        }
                         
                     }
                 }
@@ -730,7 +740,27 @@ namespace IteratorMod.CMOracle
                         }
                     }
                     break;
+                case CMOracleAction.saveMetCM:
+                    string saveFilePath = GetFilePath("metCM");
+                    if (!File.Exists(saveFilePath))
+                    {
+                        File.WriteAllText(saveFilePath, "0");
+                    }
+                    //PlayerProgression plrprg = this.oracle.room.game.rainWorld.progression;
+                    break;
             }
+        }
+
+        private string GetFilePath(string fileName)
+        {
+            string saveFilePath = string.Concat(new object[]
+            {
+                Custom.RootFolderDirectory(),
+                Path.DirectorySeparatorChar,
+                fileName,
+                ".txt"
+            });
+            return saveFilePath;
         }
 
         private ShortcutData? GetShortcutToRoom(string roomId)
