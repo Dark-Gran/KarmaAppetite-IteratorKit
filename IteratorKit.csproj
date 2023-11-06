@@ -11,34 +11,42 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Rain World\BepInEx\utils\PUBLIC-Assembly-CSharp.dll</HintPath>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>bin\Debug\net481\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="BepInEx">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Rain World\BepInEx\core\BepInEx.dll</HintPath>
+      <HintPath>bin\Debug\net481\BepInEx.dll</HintPath>
     </Reference>
     <Reference Include="HOOKS-Assembly-CSharp">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Rain World\BepInEx\plugins\HOOKS-Assembly-CSharp.dll</HintPath>
+      <HintPath>bin\Debug\net481\HOOKS-Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>bin\Debug\net481\Mono.Cecil.dll</HintPath>
     </Reference>
     <Reference Include="MonoMod.RuntimeDetour">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Rain World\BepInEx\core\MonoMod.RuntimeDetour.dll</HintPath>
+      <HintPath>bin\Debug\net481\MonoMod.RuntimeDetour.dll</HintPath>
     </Reference>
     <Reference Include="MonoMod.Utils">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Rain World\BepInEx\core\MonoMod.Utils.dll</HintPath>
+      <HintPath>bin\Debug\net481\MonoMod.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>bin\Debug\net481\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>bin\Debug\net481\PUBLIC-Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Rain World\RainWorld_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>bin\Debug\net481\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Rain World\RainWorld_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>bin\Debug\net481\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.InputLegacyModule">
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Rain World\RainWorld_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
+      <HintPath>bin\Debug\net481\UnityEngine.InputLegacyModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SharedInternalsModule">
+      <HintPath>bin\Debug\net481\UnityEngine.SharedInternalsModule.dll</HintPath>
     </Reference>
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy /Y &quot;$(TargetPath)&quot; &quot;C:\Program Files (x86)\Steam\steamapps\common\Rain World\RainWorld_Data\StreamingAssets\mods\IteratorKit\plugins&quot;" />
-  </Target>
 
 </Project>
