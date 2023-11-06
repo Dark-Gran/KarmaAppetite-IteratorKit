@@ -459,9 +459,16 @@ namespace IteratorMod.CMOracle
                             return Custom.HSL2RGB(
                                 Mathf.Lerp(gownColor.from.h, gownColor.to.h, Mathf.Pow(f, 2f)), 
                                 Mathf.Lerp(gownColor.from.s, gownColor.to.s, f), 
-                                Mathf.Lerp(gownColor.from.s, gownColor.to.s, f)
+                                Mathf.Lerp(gownColor.from.l, gownColor.to.l, f)
                             );
-                        } 
+                        } else if (gownColor.type == "gradient2")
+                        {
+                            return Custom.HSL2RGB(
+                                Mathf.Lerp(gownColor.from.h, gownColor.to.h, Mathf.Pow(f*0.5f, 2f)),
+                                Mathf.Lerp(gownColor.from.s, gownColor.to.s, f*0.5f),
+                                Mathf.Lerp(gownColor.from.l, gownColor.to.l, f*0.5f)
+                            );
+                        }
                         else
                         { // gown type == "solid"
                             return new Color(gownColor.r, gownColor.g, gownColor.b, gownColor.a);
