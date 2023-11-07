@@ -5,6 +5,7 @@
 	"authors": "twofour2 (edit: DarkGran)",
 	"description": "Framework for creating custom iterators and making dialogs for existing iterators.\nEdited for Karma Appetite.",
 	"requirements_names": [ "Karma Appetite" ],
+	"requirements":  ["darkgran.karmaappetite"],
 	"tags": [ "Custom Iterator" ],
 	"checksum_override_version": false
 }
