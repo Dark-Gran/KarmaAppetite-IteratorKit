@@ -158,9 +158,6 @@ namespace IteratorMod.CMOracle
             this.inActionCounter++;
             CheckActions(); // runs actions like giveMark. moved out of update to avoid mess. 
 
-            // look at player
-            this.lookPoint = this.player.firstChunk.pos;
-
             // pearl code
             if (this.inspectPearl == null)
             {
@@ -169,8 +166,9 @@ namespace IteratorMod.CMOracle
 
             if (this.player != null && this.player.room == this.oracle.room)
             {
+                this.lookPoint = this.player.firstChunk.pos; // look at player
+
                 this.hasNoticedPlayer = true;
-                
 
                 if (this.playerOutOfRoomCounter > 0)
                 {
