@@ -703,6 +703,30 @@ namespace IteratorMod.CMOracle
                     this.action = CMOracleAction.generalIdle;
 
                     break;
+                case CMOracleAction.giveMaxKarma:
+                    ((StoryGameSession)this.oracle.room.game.session).saveState.deathPersistentSaveData.karmaCap = 9;
+                    ((StoryGameSession)this.oracle.room.game.session).saveState.deathPersistentSaveData.karma = 9;
+                    this.oracle.room.game.manager.rainWorld.progression.SaveDeathPersistentDataOfCurrentState(false, false);
+                    foreach (RoomCamera camera in this.oracle.room.game.cameras)
+                    {
+                        if (camera.hud.karmaMeter != null)
+                        {
+                            camera.hud.karmaMeter.forceVisibleCounter = 80;
+                            camera.hud.karmaMeter.UpdateGraphic();
+                            camera.hud.karmaMeter.reinforceAnimation = 1;
+                            ((StoryGameSession)this.oracle.room.game.session).AppendTimeOnCycleEnd(true);
+                        }
+                    }
+
+                    foreach (Player player in base.PlayersInRoom)
+                    {
+                        for (int i = 0; i < 20; i++)
+                            {
+                                this.oracle.room.AddObject(new Spark(player.mainBodyChunk.pos, Custom.RNV() * UnityEngine.Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
+                            }
+                        }
+                    this.action = CMOracleAction.generalIdle;
+                    break;
                 case CMOracleAction.giveFood:
                     if (!Int32.TryParse(this.actionParam, out int playerFood))
                     {
