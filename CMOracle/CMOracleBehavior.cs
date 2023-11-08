@@ -606,55 +606,57 @@ namespace IteratorMod.CMOracle
                     }
                     break;
                 case CMOracleAction.giveMark:
-                    IteratorKit.Logger.LogWarning("GIVING MARK TO PLAYER");
-                    IteratorKit.Logger.LogWarning(((StoryGameSession)this.player.room.game.session).saveState.deathPersistentSaveData.theMark);
-                    if (((StoryGameSession)this.oracle.room.game.session).saveState.deathPersistentSaveData.theMark)
-                    {
-                        IteratorKit.Logger.LogInfo("Player already has mark!");
+                    if (this.player != null) {
+                        IteratorKit.Logger.LogWarning("GIVING MARK TO PLAYER");
+                        IteratorKit.Logger.LogWarning(((StoryGameSession)this.player.room.game.session).saveState.deathPersistentSaveData.theMark);
+                        if (((StoryGameSession)this.oracle.room.game.session).saveState.deathPersistentSaveData.theMark)
+                        {
+                            IteratorKit.Logger.LogInfo("Player already has mark!");
+                            this.action = CMOracleAction.generalIdle;
+                            return;
+                        }
+                        if (this.inActionCounter > 30 && this.inActionCounter < 300)
+                        {
+                            if (this.inActionCounter < 300)
+                            {
+                                if (ModManager.CoopAvailable)
+                                {
+                                    base.StunCoopPlayers(20);
+                                }
+                                else
+                                {
+                                    this.player.Stun(20);
+                                }
+                            }
+                            Vector2 holdPlayerAt = Vector2.ClampMagnitude(this.oracle.room.MiddleOfTile(24, 14) - this.player.mainBodyChunk.pos, 40f) / 40f * 2.8f * Mathf.InverseLerp(30f, 160f, (float)this.inActionCounter);
+
+                            foreach (Player player in base.PlayersInRoom)
+                            {
+                                player.mainBodyChunk.vel += holdPlayerAt;
+                            }
+
+                        }
+                        if (this.inActionCounter == 30)
+                        {
+                            this.oracle.room.PlaySound(SoundID.SS_AI_Give_The_Mark_Telekenisis, 0f, 1f, 1f);
+                        }
+                        if (this.inActionCounter == 300)
+                        {
+                            this.action = CMOracleAction.generalIdle;
+                            this.player.AddFood(10);
+                            foreach (Player player in base.PlayersInRoom)
+                            {
+                                for (int i = 0; i < 20; i++)
+                                {
+                                    this.oracle.room.AddObject(new Spark(player.mainBodyChunk.pos, Custom.RNV() * UnityEngine.Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
+                                }
+                            }
+
+                            ((StoryGameSession)this.player.room.game.session).saveState.deathPersistentSaveData.theMark = true;
+                            this.conversation = new CMConversation(this, CMConversation.CMDialogType.Generic, "afterGiveMark");
+                        }
                         this.action = CMOracleAction.generalIdle;
-                        return;
                     }
-                    if (this.inActionCounter > 30 && this.inActionCounter < 300)
-                    {
-                        if (this.inActionCounter < 300)
-                        {
-                            if (ModManager.CoopAvailable)
-                            {
-                                base.StunCoopPlayers(20);
-                            }
-                            else
-                            {
-                                this.player.Stun(20);
-                            }
-                        }
-                        Vector2 holdPlayerAt = Vector2.ClampMagnitude(this.oracle.room.MiddleOfTile(24, 14) - this.player.mainBodyChunk.pos, 40f) / 40f * 2.8f * Mathf.InverseLerp(30f, 160f, (float)this.inActionCounter);
-
-                        foreach (Player player in base.PlayersInRoom)
-                        {
-                            player.mainBodyChunk.vel += holdPlayerAt;
-                        }
-
-                    }
-                    if (this.inActionCounter == 30)
-                    {
-                        this.oracle.room.PlaySound(SoundID.SS_AI_Give_The_Mark_Telekenisis, 0f, 1f, 1f);
-                    }
-                    if (this.inActionCounter == 300)
-                    {
-                        this.action = CMOracleAction.generalIdle;
-                        this.player.AddFood(10);
-                        foreach (Player player in base.PlayersInRoom)
-                        {
-                            for (int i = 0; i < 20; i++)
-                            {
-                                this.oracle.room.AddObject(new Spark(player.mainBodyChunk.pos, Custom.RNV() * UnityEngine.Random.value * 40f, new Color(1f, 1f, 1f), null, 30, 120));
-                            }
-                        }
-
-                        ((StoryGameSession)this.player.room.game.session).saveState.deathPersistentSaveData.theMark = true;
-                        this.conversation = new CMConversation(this, CMConversation.CMDialogType.Generic, "afterGiveMark");
-                    }
-                    this.action = CMOracleAction.generalIdle;
                     break;
                 case CMOracleAction.giveKarma:
                     // set player to max karma level
@@ -726,12 +728,15 @@ namespace IteratorMod.CMOracle
                     this.action = CMOracleAction.generalIdle;
                     break;
                 case CMOracleAction.giveFood:
-                    if (!Int32.TryParse(this.actionParam, out int playerFood))
+                    if (this.player != null)
                     {
-                        playerFood = this.player.MaxFoodInStomach;
+                        if (!Int32.TryParse(this.actionParam, out int playerFood))
+                        {
+                            playerFood = this.player.MaxFoodInStomach;
+                        }
+                        this.player.AddFood(playerFood);
+                        this.action = CMOracleAction.generalIdle;
                     }
-                    this.player.AddFood(playerFood);
-                    this.action = CMOracleAction.generalIdle;
                     break;
                 case CMOracleAction.startPlayerConversation:
                     this.conversation = new CMConversation(this, CMConversation.CMDialogType.Generic, "playerConversation");
@@ -756,7 +761,7 @@ namespace IteratorMod.CMOracle
                     this.ChangePlayerScore("set", -10);
                     break;
                 case CMOracleAction.killPlayer:
-                    if (!this.player.dead && this.player.room == this.oracle.room)
+                    if (this.player != null && !this.player.dead && this.player.room == this.oracle.room)
                     {
                         IteratorKit.Logger.LogInfo("Oracle killing player");
                         this.player.mainBodyChunk.vel += Custom.RNV() * 12f;
