@@ -34,3 +34,7 @@ Before filing an issue, please verify you have the mod correctly installed.
 
 **Contact**   
 Feel free to get in touch with me via the rainworld discord (same username as github). 
+
+**EDITED BY DARKGRAN**  
+Forked for Karma Appetite.  
+Visit [Karma Appetite repository](https://github.com/Dark-Gran/KarmaAppetite2) for more info.
